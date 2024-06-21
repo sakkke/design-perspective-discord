@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "gpt-4o-discord"
+version = "0.1.0"
+description = ""
+authors = ["sakkke <84666033+sakkke@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
