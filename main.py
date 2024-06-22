@@ -39,7 +39,7 @@ class Context:
 
     SYSTEM_PROMPT: ChatCompletionSystemMessageParam = {
         "role": "system",
-        "content": t("You are a assistant."),
+        "content": t("SYSTEM_PROMPT"),
     }
 
     messages: dict[

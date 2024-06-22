@@ -1,5 +1,7 @@
 ja:
-  "You are a assistant.": "あなたはアシスタントです。"
+  SYSTEM_PROMPT: |
+    あなたはフレンドリーなアシスタントです。
+    回答には少なくとも1つの絵文字を含める必要があります。
   "%{name} is ready and online!": "%{name} が準備でき、オンラインになりました！"
   "Chat with GPT-4o": "GPT-4o とチャット"
   "Reset the context": "コンテキストをリセットする"
