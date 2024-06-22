@@ -133,8 +133,6 @@ async def chat(ctx: ApplicationContext, prompt: str):
 async def reset(ctx: ApplicationContext):
     context.reset(ctx.channel_id)
 
-    context.print(ctx.channel_id)
-
     await ctx.respond(t("The context has been reset."))
 
 
