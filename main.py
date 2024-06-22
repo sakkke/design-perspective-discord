@@ -64,7 +64,9 @@ class Context:
         ),
     ):
         if channel_id not in self.messages:
-            self.reset(channel_id)
+            self.messages[channel_id] = deque(
+                maxlen=Context.MAX_CONTEXT_LENGTH,
+            )
             self.messages[channel_id].append(Context.SYSTEM_PROMPT)
         self.messages[channel_id].append(message)
 
@@ -81,9 +83,7 @@ class Context:
         print(f"{channel_id}: {self.messages[channel_id]}")
 
     def reset(self, channel_id: int):
-        self.messages[channel_id] = deque(
-            maxlen=Context.MAX_CONTEXT_LENGTH,
-        )
+        del self.messages[channel_id]
 
 
 context = Context()
