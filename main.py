@@ -127,7 +127,7 @@ async def chat(ctx: ApplicationContext, prompt: str):
 
     context.print(ctx.channel_id)
 
-    await ctx.respond(f"> {prompt}\n\n{content}")
+    await ctx.respond(content)
 
 
 @bot.slash_command(name="reset", description=t("Reset the context"))
