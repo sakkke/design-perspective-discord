@@ -64,10 +64,7 @@ class Context:
         ),
     ):
         if channel_id not in self.messages:
-            self.messages[channel_id] = deque(
-                maxlen=Context.MAX_CONTEXT_LENGTH,
-            )
-            self.messages[channel_id].append(Context.SYSTEM_PROMPT)
+            self.initialize(channel_id)
         self.messages[channel_id].append(message)
 
     def get(
@@ -78,6 +75,12 @@ class Context:
         | ChatCompletionUserMessageParam
     ]:
         return list(self.messages[channel_id])
+
+    def initialize(self, channel_id: int):
+        self.messages[channel_id] = deque(
+            maxlen=Context.MAX_CONTEXT_LENGTH,
+        )
+        self.messages[channel_id].append(Context.SYSTEM_PROMPT)
 
     def print(self, channel_id: int):
         print(f"{channel_id}: {self.messages[channel_id]}")
