@@ -10,6 +10,7 @@ python = "^3.12"
 py-cord = "^2.5.0"
 python-dotenv = "^1.0.1"
 openai = "^1.35.3"
+i18nice = "^0.15.5"
 
 
 [tool.poetry.group.dev.dependencies]
