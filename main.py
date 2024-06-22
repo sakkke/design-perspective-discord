@@ -98,6 +98,7 @@ async def on_ready():
 
 
 @bot.slash_command(name="chat", description=t("Chat with GPT-4o"))
+@bot.slash_command(name="c", description=t("Chat with GPT-4o"))
 async def chat(ctx: ApplicationContext, prompt: str):
     await ctx.defer()
 
