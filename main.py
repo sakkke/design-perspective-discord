@@ -99,6 +99,8 @@ async def on_ready():
 
 @bot.slash_command(name="chat", description=t("Chat with GPT-4o"))
 async def chat(ctx: ApplicationContext, prompt: str):
+    await ctx.defer()
+
     user_prompt: ChatCompletionUserMessageParam = {
         "role": "user",
         "content": prompt,
