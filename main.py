@@ -99,7 +99,7 @@ async def chat(ctx: ApplicationContext, prompt: str):
 
     context.print(ctx.channel_id)
 
-    await ctx.respond(content)
+    await ctx.respond(f"> {prompt}\n{content}")
 
 
 token = getenv("TOKEN")
