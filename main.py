@@ -1,3 +1,5 @@
+from i18n import load_path, set as i18n_set, t
+from locale import getlocale as locale_getlocale
 from dotenv import load_dotenv
 from os import getenv
 from discord import ApplicationContext, Bot
@@ -8,6 +10,22 @@ from openai.types.chat import (
     ChatCompletionUserMessageParam,
 )
 from collections import deque
+
+
+def getlocale() -> str:
+    locale = locale_getlocale()[0]
+    if locale is None:
+        return "en"
+    elif locale.startswith(("ja_", "Japanese_")):
+        return "ja"
+    else:
+        return "en"
+
+
+load_path.append("translations")
+i18n_set("filename_format", "{locale}.{format}")
+i18n_set("locale", getlocale())
+i18n_set("fallback", "en")
 
 load_dotenv()
 
@@ -21,7 +39,7 @@ class Context:
 
     SYSTEM_PROMPT: ChatCompletionSystemMessageParam = {
         "role": "system",
-        "content": "You are a assistant.",
+        "content": t("You are a assistant."),
     }
 
     messages: dict[
@@ -73,10 +91,10 @@ context = Context()
 
 @bot.event
 async def on_ready():
-    print(f"{bot.user} is ready and online!")
+    print(t("%{name} is ready and online!", name=bot.user))
 
 
-@bot.slash_command(name="chat", description="Chat with GPT-4o")
+@bot.slash_command(name="chat", description=t("Chat with GPT-4o"))
 async def chat(ctx: ApplicationContext, prompt: str):
     user_prompt: ChatCompletionUserMessageParam = {
         "role": "user",
@@ -105,13 +123,13 @@ async def chat(ctx: ApplicationContext, prompt: str):
     await ctx.respond(f"> {prompt}\n{content}")
 
 
-@bot.slash_command(name="reset", description="Reset the context")
+@bot.slash_command(name="reset", description=t("Reset the context"))
 async def reset(ctx: ApplicationContext):
     context.reset(ctx.channel_id)
 
     context.print(ctx.channel_id)
 
-    await ctx.respond("The context has been reset.")
+    await ctx.respond(t("The context has been reset."))
 
 
 token = getenv("TOKEN")
