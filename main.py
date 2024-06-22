@@ -86,7 +86,8 @@ class Context:
         print(f"{channel_id}: {self.messages[channel_id]}")
 
     def reset(self, channel_id: int):
-        del self.messages[channel_id]
+        if channel_id in self.messages:
+            del self.messages[channel_id]
 
 
 context = Context()
