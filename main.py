@@ -46,9 +46,7 @@ class Context:
         ),
     ):
         if channel_id not in self.messages:
-            self.messages[channel_id] = deque(
-                maxlen=Context.MAX_CONTEXT_LENGTH,
-            )
+            self.reset(channel_id)
             self.messages[channel_id].append(Context.SYSTEM_PROMPT)
         self.messages[channel_id].append(message)
 
@@ -63,6 +61,11 @@ class Context:
 
     def print(self, channel_id: int):
         print(f"{channel_id}: {self.messages[channel_id]}")
+
+    def reset(self, channel_id: int):
+        self.messages[channel_id] = deque(
+            maxlen=Context.MAX_CONTEXT_LENGTH,
+        )
 
 
 context = Context()
@@ -100,6 +103,15 @@ async def chat(ctx: ApplicationContext, prompt: str):
     context.print(ctx.channel_id)
 
     await ctx.respond(f"> {prompt}\n{content}")
+
+
+@bot.slash_command(name="reset", description="Reset the context")
+async def reset(ctx: ApplicationContext):
+    context.reset(ctx.channel_id)
+
+    context.print(ctx.channel_id)
+
+    await ctx.respond("The context has been reset.")
 
 
 token = getenv("TOKEN")
