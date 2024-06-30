@@ -2,7 +2,7 @@ from i18n import load_path, set as i18n_set, t
 from locale import getlocale as locale_getlocale
 from dotenv import load_dotenv
 from os import getenv
-from discord import ApplicationContext, Bot
+from discord import ApplicationContext, Bot, Intents, Message
 from openai import OpenAI
 from openai.types.chat import (
     ChatCompletionAssistantMessageParam,
@@ -29,7 +29,10 @@ i18n_set("fallback", "en")
 
 load_dotenv()
 
-bot = Bot()
+intents = Intents.default()
+intents.message_content = True
+
+bot = Bot(intents=intents)
 ai = OpenAI()
 
 
@@ -96,6 +99,43 @@ context = Context()
 @bot.event
 async def on_ready():
     print(t("%{name} is ready and online!", name=bot.user))
+
+
+@bot.event
+async def on_message(message: Message):
+    if message.author == bot.user:
+        return
+
+    if message.author.bot:
+        return
+
+    prompt = message.content
+
+    user_prompt: ChatCompletionUserMessageParam = {
+        "role": "user",
+        "content": prompt,
+    }
+    context.add(message.channel.id, user_prompt)
+
+    messages = context.get(message.channel.id)
+    completion = ai.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            *messages,
+            user_prompt,
+        ],
+    )
+    m = completion.choices[0].message
+    content = m.content
+    assistant_prompt: ChatCompletionAssistantMessageParam = {
+        "role": "assistant",
+        "content": content,
+    }
+    context.add(message.channel.id, assistant_prompt)
+
+    context.print(message.channel.id)
+
+    await message.channel.send(content)
 
 
 @bot.slash_command(name="chat", description=t("Chat with GPT-4o"))
