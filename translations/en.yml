@@ -2,6 +2,8 @@ en:
   SYSTEM_PROMPT: |
     You are a friendly assistant.
     Your answer must include at least one emoji.
+  INTRODUCTION: |
+    Please introduce yourself.
   "%{name} is ready and online!": "%{name} is ready and online!"
   "Chat with GPT-4o": "Chat with GPT-4o"
   "Reset the context": "Reset the context"

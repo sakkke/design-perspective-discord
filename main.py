@@ -178,5 +178,10 @@ async def reset(ctx: ApplicationContext):
     await ctx.respond(t("The context has been reset."))
 
 
+@bot.slash_command(name="start", description=t("Start the design thinking"))
+async def start(ctx: ApplicationContext):
+    await chat(ctx, t("INTRODUCTION"))
+
+
 token = getenv("TOKEN")
 bot.run(token)
