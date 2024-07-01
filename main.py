@@ -95,6 +95,12 @@ class Context:
 
 context = Context()
 
+CHUNK_SIZE = 2000
+
+
+def get_chunks(text: str, chunk_size: int) -> list[str]:
+    return [text[i : i + chunk_size] for i in range(0, len(text), chunk_size)]
+
 
 @bot.event
 async def on_ready():
@@ -135,7 +141,9 @@ async def on_message(message: Message):
 
     context.print(message.channel.id)
 
-    await message.channel.send(content)
+    chunks = get_chunks(content, CHUNK_SIZE)
+    for chunk in chunks:
+        await message.channel.send(chunk)
 
 
 @bot.slash_command(name="chat", description=t("Chat with GPT-4o"))
@@ -167,7 +175,9 @@ async def chat(ctx: ApplicationContext, prompt: str):
 
     context.print(ctx.channel_id)
 
-    await ctx.respond(content)
+    chunks = get_chunks(content, CHUNK_SIZE)
+    for chunk in chunks:
+        await ctx.respond(chunk)
 
 
 @bot.slash_command(name="reset", description=t("Reset the context"))
