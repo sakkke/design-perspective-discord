@@ -115,6 +115,9 @@ async def on_message(message: Message):
     if message.author.bot:
         return
 
+    if message.channel.id not in context.messages:
+        return
+
     prompt = message.content
 
     user_prompt: ChatCompletionUserMessageParam = {
